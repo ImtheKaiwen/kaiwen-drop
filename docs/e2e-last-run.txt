@@ -1,0 +1,82 @@
+Kaiwen Drop E2E - 2026-11-10 05:44 - Windows 10.0.26200.0 - exe: debug
+
+## spike.ps1
+W01 : PASS - gorunur uygulama penceresi: 0
+W03 : PASS - gorunur pencere: 1 [775,797,1066,926] dpi=120
+W06 : PASS - alt menu: 2 pencere
+W07 : PASS - alt menuye gecince pencere sayisi: 2
+W06b : PASS - ucuncu seviye: 3 pencere
+W08 : PASS - Esc sonrasi gorunur pencere: 0
+W02 : PASS - Notepad on planda, popup: 0
+
+## geometry.ps1
+geo-orta : PASS - 2 popup, calisma alani icinde=True
+geo3-orta : PASS - 3 popup, ust uste binme=False
+geo-sag-alt : PASS - 2 popup, calisma alani icinde=True
+geo3-sag-alt : PASS - 3 popup, ust uste binme=False
+geo-sol-ust : PASS - 2 popup, calisma alani icinde=True
+geo3-sol-ust : PASS - 3 popup, ust uste binme=False
+
+## full.ps1
+W23 : PASS - tray-only baslangic, gorunur pencere: 0
+W01 : PASS - Explorer secim yok, gorunur pencere: 0
+W02 : PASS - Notepad on planda, gorunur pencere: 0
+W03/W04 : PASS - 3 dosya secili, kok popup: 1
+W06 : PASS - Documents ustunde alt menu, pencere: 2
+W07 : PASS - fare alt menuye gecti, zincir pencere sayisi: 2
+W08 : PASS - Esc sonrasi gorunur: 0
+W09 : PASS - disari tiklama sonrasi gorunur: 0
+W10 : PASS - hizli cift kisayol: 0 pencere (>1 olmamali, ikinci basis ya yutulur ya oturumu kapatir); Esc sonrasi orphan: 0
+W11 : PASS - yalniz guncel secim (b.txt) tasindi, a.txt yerinde
+W06c : PASS - 3 seviye kaskad: 3 pencere
+W12a : PASS - onay diyalogu gorundu: 1 pencere
+W12 : PASS - dosya hedefte, kaynakta yok
+W16 : PASS - Turkce karakterli dosya bozulmadan tasindi
+W30 : PASS - islem sonrasi gorunur pencere: 0; toast gorundu: True
+W13a : PASS - Iptal: hicbir sey degismedi, ustune yazilmadi
+W13 : PASS - eski korundu, yeni 'a (2).txt' olarak tasindi
+W14 : PASS - klasor kendi altina tasinmadi (engellendi), derinlik: True
+W15 : PASS - 3'ten 2'si tasindi, kilitli dosya yerinde ve kayip yok
+W27 : PASS - yeni klasor eklendi, menu yeniden acildi (yukseklik 352)
+KBD : PASS - Right alt menu acti (2), Left kapatti (1), Esc hepsini (0)
+W29a : PASS - koyu tema kaskad ekran goruntusu kaydedildi
+W31 : PASS - Dev -> active -> projA derin kaskad: 4 popup
+
+## settings.ps1
+W23 : PASS - baslangicta gorunur pencere: 0
+W17a : PASS - Ayarlar acildi, gorunur pencere: 1
+W19 : PASS - iki kez acma: pencere 1, surec 1
+SIZE : PASS - boyut mantiksal: 454x568
+I18N : PASS - baslik (tr-TR) UIA agacinda: True
+W18 : PASS - tekerlek sonrasi icerik kaydi: True (kaydirma cubugu CSS ile gizli; bkz. 12-settings-scrolled.png)
+W24 : PASS - Run anahtari: baslangic=0 acik=1 kapali=0
+W28 : PASS - kok kaydi 2 -> 1; gercek klasor ve icerigi duruyor
+W17 : PASS - X sonrasi pencere: 0; uygulama (tray) calismaya devam ediyor
+ESC : PASS - Settings Esc ile kapandi: 0 pencere
+
+## desktop.ps1
+W05 : PASS - masaustunde 2 simge secili (on plan: Progman) + kisayol: menu penceresi 1
+W05b : PASS - masaustunde secim yok + kisayol: pencere 0
+
+## drop.ps1
+DROP : PASS - birakma alani acildi: 1 pencere, 250x150 px
+W26a : FAIL - birakma sonrasi hedef secme menusu: 0
+W26b : PASS - hedef secilmeden dosya tasinmadi (a.txt yerinde)
+W26c : PASS - Esc: menu kapandi, dosya yerinde
+
+## tabs.ps1
+TABS : PASS - aktif sekmenin secimi (other\x.txt) tasindi, arka sekmeninki (files\a.txt) yerinde: x.txt hedefte=True other\x.txt yerinde=False a.txt hedefte=False files\a.txt yerinde=True popup=
+
+## settings.ps1 (dark / tr-TR)
+W23 : PASS - baslangicta gorunur pencere: 0
+W17a : PASS - Ayarlar acildi, gorunur pencere: 1
+W19 : PASS - iki kez acma: pencere 1, surec 1
+SIZE : PASS - boyut mantiksal: 454x568
+I18N : PASS - baslik (tr-TR) UIA agacinda: True
+
+## settings.ps1 (light / en-US)
+W23 : PASS - baslangicta gorunur pencere: 0
+W17a : PASS - Ayarlar acildi, gorunur pencere: 1
+W19 : PASS - iki kez acma: pencere 1, surec 1
+SIZE : PASS - boyut mantiksal: 454x568
+I18N : PASS - baslik (en-US) UIA agacinda: True

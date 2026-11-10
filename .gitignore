@@ -1,0 +1,14 @@
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+*.log
+*.tmp
+.vite/
+coverage/
+test-output/
+.env*
+app-icon.png
+
+# Ekran goruntuleri yerel kalir (kullanici yolu/masaustu icerebilir)
+docs/screenshots/

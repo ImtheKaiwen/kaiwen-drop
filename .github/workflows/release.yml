@@ -1,0 +1,70 @@
+name: release
+
+# `v*` etiketi (ornegin v0.1.0) itilince: dogrula -> imzali NSIS kurulumunu uret -> GitHub Release yayinla
+# (kurulum .exe, .sig imzasi ve uygulamanin otomatik guncelleme icin okudugu latest.json).
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Etiket ile surum eslesiyor mu?
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}".TrimStart("v")
+          $conf = (Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
+          $pkg = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          $cargo = (Select-String -Path src-tauri/Cargo.toml -Pattern '^version = "(.+)"' | Select-Object -First 1).Matches[0].Groups[1].Value
+          if ($tag -ne $conf -or $tag -ne $pkg -or $tag -ne $cargo) {
+            throw "Surum uyusmuyor: etiket=$tag tauri.conf=$conf package.json=$pkg Cargo.toml=$cargo"
+          }
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: cargo fmt --check
+        working-directory: src-tauri
+      - run: cargo clippy --all-targets --locked -- -D warnings
+        working-directory: src-tauri
+      - run: cargo test --lib --locked
+        working-directory: src-tauri
+
+      - name: Imzali kurulum + Release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Kaiwen Drop ${{ github.ref_name }}"
+          releaseBody: "Windows 11 (x64) kurulumu: `Kaiwen Drop_*_x64-setup.exe`. Kurulu uygulama yeni surumleri kendiliginden alir. Degisiklikler: CHANGELOG.md"
+          releaseDraft: false
+          prerelease: false
+          uploadUpdaterJson: true

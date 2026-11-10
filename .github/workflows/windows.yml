@@ -1,0 +1,60 @@
+name: windows
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Frontend bağımlılıkları (lockfile sabit)
+        run: pnpm install --frozen-lockfile
+
+      - name: TypeScript tip denetimi
+        run: pnpm typecheck
+
+      - name: Arayüz testleri
+        run: pnpm test
+
+      - name: Rust biçim
+        run: cargo fmt --check
+        working-directory: src-tauri
+
+      - name: Rust clippy
+        run: cargo clippy --all-targets --locked -- -D warnings
+        working-directory: src-tauri
+
+      - name: Rust testleri
+        run: cargo test --lib --locked
+        working-directory: src-tauri
+
+      - name: Kurulum paketi (NSIS, imzasiz; surum imzali release.yml'de uretilir)
+        run: pnpm tauri build --config src-tauri/tauri.ci.conf.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kaiwen-drop-windows-x64
+          path: src-tauri/target/release/bundle/nsis/*.exe
+          if-no-files-found: error

@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Kaiwen Drop pencereleri: yalniz olay dinleme ve surukleme. Dosya sistemi yetkisi frontend'e acilmaz.",
+  "windows": ["settings", "drop", "dock", "pw-*"],
+  "permissions": ["core:event:default", "core:window:allow-start-dragging"]
+}
