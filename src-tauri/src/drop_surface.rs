@@ -77,16 +77,20 @@ pub fn open(app: &AppHandle, dock: bool) {
     );
     let m = 0; // opak pencere: seffaf kenar boslugu yok
     let edge = (24.0 * mon.scale).round() as i32;
-    let content = if dock {
-        Rect::new(
-            mon.work.r - wp,
-            mon.work.t + (mon.work.h() - hp) / 2,
-            wp,
-            hp,
-        )
+    // Dock sag-alt kosede (ekran kenarina yapisik degil); birakma alani varsa onun ustunde, yoksa ayni kosede.
+    let dock_h = (DOCK.1 * mon.scale).round() as i32;
+    let gap = (8.0 * mon.scale).round() as i32;
+    let lift = if !dock && app.get_webview_window("dock").is_some() {
+        dock_h + gap
     } else {
-        Rect::new(mon.work.r - wp - edge, mon.work.b - hp - edge, wp, hp)
+        0
     };
+    let content = Rect::new(
+        mon.work.r - wp - edge,
+        mon.work.b - hp - edge - lift,
+        wp,
+        hp,
+    );
     let outer = content.inflate(m);
     #[cfg(windows)]
     if let Ok(h) = win_.hwnd() {

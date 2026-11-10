@@ -193,6 +193,23 @@ async fn save_settings(app: AppHandle, new: Settings) -> Result<SaveResult, Stri
     })
 }
 
+/// Kisayol kaydi sirasinda global kisayolu gecici birak: mevcut kombinasyon yakalanabilsin ve yanlislikla menu acmasin.
+#[tauri::command]
+fn pause_shortcut(app: AppHandle, paused: bool) {
+    if paused {
+        let _ = app.global_shortcut().unregister_all();
+    } else {
+        let cur = app
+            .state::<AppState>()
+            .settings
+            .lock()
+            .unwrap()
+            .shortcut
+            .clone();
+        let _ = register_shortcut(&app, &cur);
+    }
+}
+
 #[tauri::command]
 async fn pick_folder(app: AppHandle) -> Option<String> {
     let (tx, rx) = std::sync::mpsc::channel();
@@ -370,6 +387,7 @@ pub fn run() {
             pick_folder,
             validate_path,
             set_autostart,
+            pause_shortcut,
             window_ready,
             window_close,
             open_settings,

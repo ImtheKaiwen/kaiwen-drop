@@ -37,6 +37,8 @@ export const tr = {
   settings: {
     title: "Ayarlar",
     roots: "Kök klasörler",
+    rootsEmpty: "Henüz kök klasör yok",
+    rootsEmptySub: "Menüde hızlıca ulaşmak istediğiniz klasörleri ekleyin.",
     addRoot: "Kök klasör ekle",
     rowMenu: "Satır menüsü",
     edit: "Düzenle",
@@ -51,6 +53,7 @@ export const tr = {
     themes: { system: "Sistem", light: "Açık", dark: "Koyu" },
     shortcut: "Kısayol",
     shortcutPress: "Tuşlara basın…",
+    shortcutUnsupported: "Bu tuş desteklenmiyor; harf, rakam, F tuşu veya noktalama deneyin",
     shortcutNeedMod: "En az bir değiştirici tuş (Ctrl, Alt, Shift) gerekli",
     autostart: "Windows açılışında başlat",
     menuSection: "Menü",

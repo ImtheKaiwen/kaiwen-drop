@@ -17,13 +17,22 @@ const MODIFIER_CODES = new Set([
   "MetaRight",
 ]);
 
+const EXTRA: Record<string, string> = {
+  Comma: "Comma", Period: "Period", Slash: "Slash", Semicolon: "Semicolon", Quote: "Quote",
+  BracketLeft: "BracketLeft", BracketRight: "BracketRight", Backslash: "Backslash", Minus: "Minus",
+  Equal: "Equal", Backquote: "Backquote", IntlBackslash: "IntlBackslash",
+  Insert: "Insert", Delete: "Delete", Home: "Home", End: "End", PageUp: "PageUp", PageDown: "PageDown",
+  ArrowUp: "ArrowUp", ArrowDown: "ArrowDown", ArrowLeft: "ArrowLeft", ArrowRight: "ArrowRight",
+};
+
 /** `e.code` -> ana tus adi (Turkce klavyede AltGr nedeniyle e.key'e guvenilmez). */
 export function keyName(code: string): string | null {
   if (/^Key[A-Z]$/.test(code)) return code.slice(3);
   if (/^Digit[0-9]$/.test(code)) return code.slice(5);
   if (/^F([1-9]|1[0-9]|2[0-4])$/.test(code)) return code;
   if (code === "Space") return "Space";
-  return null;
+  const named = EXTRA[code];
+  return named ?? null;
 }
 
 export type AccelResult =

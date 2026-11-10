@@ -98,6 +98,7 @@ export const ipc = {
   getState: () => invoke<AppState>("get_state"),
   saveSettings: (s: Settings) => invoke<SaveResult>("save_settings", { new: s }),
   pickFolder: () => invoke<string | null>("pick_folder"),
+  pauseShortcut: (paused: boolean) => invoke<void>("pause_shortcut", { paused }),
   setAutostart: (enabled: boolean) => invoke<boolean>("set_autostart", { enabled }),
   windowReady: (label: string) => invoke<void>("window_ready", { label }),
   windowClose: (label: string) => invoke<void>("window_close", { label }),

@@ -1,5 +1,12 @@
 # Değişiklik günlüğü
 
+## 0.1.2 — kısayol kaydı, boş kök listesi, köşe dock'u
+
+### Düzeltildi
+- Ayarlar'da kök klasör yokken görünen ince boş kutu yerine açıklamalı bir boş durum ve belirgin "Kök klasör ekle" düğmesi.
+- Kısayol kaydı: kayıt sırasında global kısayol geçici bırakılır (mevcut kombinasyon da yeniden kaydedilebilir, yanlışlıkla menü açılmaz); noktalama, ok ve Home/End/PageUp/PageDown/Insert/Delete tuşları desteklenir; desteklenmeyen tuşta sessiz kalmak yerine uyarı gösterilir; kayıt sırasında pencere kapanırsa kısayol geri yüklenir; yeniden çizimde kaydın kendiliğinden bitmesi önlendi.
+- Köşe dock'u ekranın sağ kenarında ortada değil, sağ-alt köşede açılır; bırakma alanı açıkken onun altında durur.
+
 ## 0.1.1 — özel açılır liste, otomatik güncelleme
 
 ### Eklendi

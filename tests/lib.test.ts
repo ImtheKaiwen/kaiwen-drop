@@ -32,7 +32,9 @@ describe("nextIndex", () => {
 
 describe("accelerator", () => {
   it("uses physical key (AltGr safe) and orders modifiers", () => {
-    expect(eventToAccel(ev("KeyM", { ctrlKey: true, altKey: true }))).toEqual({ kind: "ok", accel: "Ctrl+Alt+M" });
+    expect(eventToAccel(ev("Comma", { ctrlKey: true, altKey: true }))).toEqual({ kind: "ok", accel: "Ctrl+Alt+Comma" });
+  expect(eventToAccel(ev("ArrowUp", { ctrlKey: true }))).toEqual({ kind: "ok", accel: "Ctrl+ArrowUp" });
+  expect(eventToAccel(ev("KeyM", { ctrlKey: true, altKey: true }))).toEqual({ kind: "ok", accel: "Ctrl+Alt+M" });
     expect(eventToAccel(ev("F5", { ctrlKey: true, shiftKey: true }))).toEqual({ kind: "ok", accel: "Ctrl+Shift+F5" });
     expect(eventToAccel(ev("Digit7", { altKey: true }))).toEqual({ kind: "ok", accel: "Alt+7" });
   });

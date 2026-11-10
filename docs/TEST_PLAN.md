@@ -51,6 +51,9 @@ Gerçek Explorer penceresi, gerçek tuş/fare ve ekran görüntüsü; tüm dosya
 | W27 | Sonradan eklenen klasör | PASS | menü yeniden açılınca görünür |
 | W28 | Kök kaldır | PASS | yalnız kayıt; klasör+içerik duruyor |
 | DD | Özel açılır liste (Dil/Tema/Yoğunluk) | PASS | açılır, seçili ✓, Esc yalnız listeyi kapatır (`15-settings-dropdown-open`) |
+| SC | Kısayol değiştirme (gerçek tarama kodlu tuş) ve yeni kısayolun çalışması | PASS | Ctrl+Shift+K kaydedildi; eski Ctrl+Alt+M açmaz, yeni açar |
+| DOCK | Köşe dock sağ-alt köşede, bırakma alanı üstünde | PASS | `19-dock-corner` |
+| EMPTY | Kök yokken Ayarlar boş durumu (açık/koyu) | PASS | `18-settings-empty-roots-*` |
 | W29 | Koyu tema + Türkçe | PASS | görsel inceleme (`09`, `10`, `11-settings-top-dark-tr`) |
 | W30 | Kapanan pencere kalıntısı | PASS | oturum sonrası görünür pencere 0; 90 sn sonra gizli sıcak pencere de yok |
 | KBD | ↓↓→ / ← / Esc | PASS | |

@@ -60,6 +60,21 @@ try {
     Record "DD" ($opt -ne $null -and @(Vis).Count -eq 1) "liste acildi (secenek bulundu: $([bool]$opt)); Esc sonrasi Ayarlar acik: $(@(Vis).Count)"
   } else { Record "DD" $null "Tema dugmesi UIA agacinda bulunamadi" }
 
+  # SC: kisayol degistirme (gercek tus): Ctrl+Shift+K -> ayar dosyasina yazilir ve yeni kisayol calisir
+  $sc = Ui-Find $w.Hwnd "Kısayol" -Actionable
+  if ($sc) {
+    $r = $sc.Current.BoundingRectangle; Click-At ([int]($r.X + $r.Width / 2)) ([int]($r.Y + $r.Height / 2)); Start-Sleep -Milliseconds 700
+    [void](Save-Crop "16-shortcut-recording" ($w.L - 20) ($w.T - 20) (($w.R - $w.L) + 40) (($w.B - $w.T) + 40))
+    # Gercek klavye tarama kodu (scan code) uretir; vk-only keybd_event e.code'u bos birakir.
+    $ks = { param($vk, $sc, $up) [W]::keybd_event([byte]$vk, [byte]$sc, $(if ($up) { 2 } else { 0 }), [UIntPtr]::Zero) }
+    & $ks 0x11 0x1D $false; & $ks 0x10 0x2A $false; Start-Sleep -Milliseconds 80
+    & $ks 0x4B 0x25 $false; Start-Sleep -Milliseconds 40; & $ks 0x4B 0x25 $true; & $ks 0x10 0x2A $true; & $ks 0x11 0x1D $true
+    Start-Sleep -Milliseconds 1200
+    $saved = (Get-Content $script:Cfg -Raw | ConvertFrom-Json).shortcut
+    [void](Save-Crop "17-shortcut-changed" ($w.L - 20) ($w.T - 20) (($w.R - $w.L) + 40) (($w.B - $w.T) + 40))
+    Record "SC" ($saved -eq "Ctrl+Shift+K") "kayitli kisayol: $saved"
+  } else { Record "SC" $null "Kisayol dugmesi UIA agacinda bulunamadi" }
+
   # W18: tekerlekle kaydirma
   $h0 = Hash-Region $w
   Move-Mouse ([int](($w.L + $w.R) / 2)) ([int](($w.T + $w.B) / 2)); Start-Sleep -Milliseconds 200

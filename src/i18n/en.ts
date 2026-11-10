@@ -39,6 +39,8 @@ export const en: Dict = {
   settings: {
     title: "Settings",
     roots: "Root folders",
+    rootsEmpty: "No root folders yet",
+    rootsEmptySub: "Add the folders you want quick access to in the menu.",
     addRoot: "Add root folder",
     rowMenu: "Row menu",
     edit: "Edit",
@@ -53,6 +55,7 @@ export const en: Dict = {
     themes: { system: "System", light: "Light", dark: "Dark" },
     shortcut: "Shortcut",
     shortcutPress: "Press keys…",
+    shortcutUnsupported: "This key is not supported; try a letter, digit, F key or punctuation",
     shortcutNeedMod: "At least one modifier key (Ctrl, Alt, Shift) is required",
     autostart: "Start with Windows",
     menuSection: "Menu",

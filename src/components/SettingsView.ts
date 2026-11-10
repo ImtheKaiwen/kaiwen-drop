@@ -65,24 +65,34 @@ export class SettingsView {
     this.render();
   }
 
+  /** Kayit modunu bitirir ve duraklatilan global kisayolu geri yukler. */
+  private stopRecording(): void {
+    if (!this.recording) return;
+    this.recording = false;
+    void ipc.pauseShortcut(false);
+  }
+
   private onKey(e: KeyboardEvent): void {
     if (this.recording) {
       e.preventDefault();
       e.stopPropagation();
       if (e.key === "Escape") {
-        this.recording = false;
+        this.stopRecording();
         this.shortcutError = null;
         this.render();
         return;
       }
       const r = eventToAccel(e);
       if (r.kind === "ok") {
-        this.recording = false;
+        this.stopRecording();
         this.shortcutError = null;
         this.s.shortcut = r.accel;
         this.commit(true);
       } else if (r.kind === "needsMod") {
         this.shortcutError = this.d.settings.shortcutNeedMod;
+        this.render();
+      } else if (r.kind === "unsupported") {
+        this.shortcutError = this.d.settings.shortcutUnsupported;
         this.render();
       }
       return;
@@ -206,6 +216,13 @@ export class SettingsView {
     const add = h("button", { class: "add-btn", type: "button", onclick: () => void this.addRoot() });
     add.innerHTML = icon("plus");
     add.append(t.addRoot);
+    if (this.s.roots.length === 0) {
+      // Bos durum: ince bos kutu yerine aciklama + belirgin ekle dugmesi.
+      add.classList.add("solo");
+      const ic = h("div", { class: "empty-ic" });
+      ic.innerHTML = icon("folder");
+      return h("div", { class: "empty-roots" }, ic, h("div", { class: "empty-title" }, t.rootsEmpty), h("div", { class: "empty-sub" }, t.rootsEmptySub), add);
+    }
     return h("div", {}, card, add);
   }
 
@@ -339,15 +356,19 @@ export class SettingsView {
         type: "button",
         "aria-label": t.shortcut,
         onclick: () => {
+          if (!this.recording) void ipc.pauseShortcut(true);
           this.recording = true;
           this.shortcutError = null;
           this.render();
         },
         onblur: () => {
-          if (this.recording) {
-            this.recording = false;
-            this.render();
-          }
+          // DOM yeniden cizilirken kaldirilan dugmenin blur'u kaydi bitirmesin: odak gercekten baska yere gittiyse bitir.
+          setTimeout(() => {
+            if (this.recording && !document.activeElement?.classList.contains("accel")) {
+              this.stopRecording();
+              this.render();
+            }
+          }, 0);
         },
       },
       this.recording ? t.shortcutPress : formatAccel(this.s.shortcut),

@@ -331,7 +331,13 @@ pub fn open_settings(app: &AppHandle, dark: bool) {
             if let Ok(h) = w.hwnd() {
                 round_corners(h, if dark { 0x0033_3333 } else { 0x00E7_E9E9 });
             }
-            let _ = app2; // gosterme isini sayfa `window_ready` ile yapar (beyaz flash yok)
+            // Kisayol kaydi sirasinda pencere kapanirsa global kisayol geri yuklensin.
+            w.on_window_event(move |ev| {
+                if matches!(ev, tauri::WindowEvent::Destroyed) {
+                    crate::pause_shortcut(app2.clone(), false);
+                }
+            });
+            // gosterme isini sayfa `window_ready` ile yapar (beyaz flash yok)
         }
         Err(e) => eprintln!("settings penceresi acilamadi: {e}"),
     }
